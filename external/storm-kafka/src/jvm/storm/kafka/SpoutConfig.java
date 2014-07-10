@@ -29,7 +29,11 @@ public class SpoutConfig extends KafkaConfig implements Serializable {
     public long stateUpdateIntervalMs = 2000;
 
     public SpoutConfig(BrokerHosts hosts, String topic, String zkRoot, String id) {
-        super(hosts, topic);
+    	/*
+         * 10.07.2014
+    	 * Onur - added id parameter as clientId when calling base constructor
+    	 */
+        super(hosts, topic, id);
         this.zkRoot = zkRoot;
         this.id = id;
     }

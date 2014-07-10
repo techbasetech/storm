@@ -24,8 +24,10 @@ import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseRichSpout;
 import kafka.message.Message;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import storm.kafka.PartitionManager.KafkaMessageId;
 
 import java.util.*;
@@ -155,6 +157,12 @@ public class KafkaSpout extends BaseRichSpout {
         if ((now - _lastUpdateMs) > _spoutConfig.stateUpdateIntervalMs) {
             commit();
         }
+        try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     @Override

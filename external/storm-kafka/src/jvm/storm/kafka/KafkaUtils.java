@@ -60,14 +60,21 @@ public class KafkaUtils {
 
 
     public static long getOffset(SimpleConsumer consumer, String topic, int partition, KafkaConfig config) {
+    	LOG.info("getOffset");
         long startOffsetTime = kafka.api.OffsetRequest.LatestTime();
-        if ( config.forceFromStart ) {
+        LOG.info("startOffsetTime : "+startOffsetTime);
+        /*
+         * 10.07.2014
+         * Onur - Added "startOffsetTime == -1L" to fix freezing problem on topology restart.
+         */
+        if ( config.forceFromStart || startOffsetTime == -1L) {
             startOffsetTime = config.startOffsetTime;
         }
         return getOffset(consumer, topic, partition, startOffsetTime);
     }
 
     public static long getOffset(SimpleConsumer consumer, String topic, int partition, long startOffsetTime) {
+    	LOG.info("getOffset consumer.clientId : "+consumer.clientId());
         TopicAndPartition topicAndPartition = new TopicAndPartition(topic, partition);
         Map<TopicAndPartition, PartitionOffsetRequestInfo> requestInfo = new HashMap<TopicAndPartition, PartitionOffsetRequestInfo>();
         requestInfo.put(topicAndPartition, new PartitionOffsetRequestInfo(startOffsetTime, 1));
